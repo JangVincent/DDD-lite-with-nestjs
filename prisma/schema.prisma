@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./jazz.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  profiles  Profile?
+  reviews   Review[]
+  replies   Reply[]
+  auths     Auth?
+}
+
+enum AuthStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Auth {
+  userId           String     @id
+  user             User       @relation(fields: [userId], references: [id])
+  status           AuthStatus
+  hashedPassword   String
+  loginFailedCount Int        @default(0)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @default(now())
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  nickname  String
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Album {
+  id            String   @id @default(uuid())
+  title         String
+  description   String
+  publishedYear Int
+  genre         String
+  coverImage    String
+  musicianNames String
+  reviews       Review[]
+}
+
+enum ReviewVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+model Review {
+  id         String           @id @default(uuid())
+  userId     String
+  user       User             @relation(fields: [userId], references: [id])
+  albumId    String
+  album      Album            @relation(fields: [albumId], references: [id])
+  title      String
+  bodyText   String
+  visibility ReviewVisibility
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @default(now())
+  deletedAt  DateTime?
+  replies    Reply[]
+}
+
+model Reply {
+  id            String    @id @default(uuid())
+  reviewId      String
+  review        Review    @relation(fields: [reviewId], references: [id])
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  parentReplyId String?
+  parentReply   Reply?    @relation("ReplyToReply", fields: [parentReplyId], references: [id])
+  text          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  deletedAt     DateTime?
+  replies       Reply[]   @relation("ReplyToReply")
+}
