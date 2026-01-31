@@ -27,7 +27,9 @@ export class UpdateReviewUseCase {
 
     // 권한 확인
     if (review.getUserId() !== userId) {
-      throw new UnauthorizedException('You are not authorized to update this review');
+      throw new UnauthorizedException(
+        'You are not authorized to update this review',
+      );
     }
 
     // 삭제된 리뷰 확인

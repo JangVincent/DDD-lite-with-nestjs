@@ -3,6 +3,7 @@ import { EntityNotFoundException } from 'src/commons/exceptions/not-found.except
 import { UnauthorizedException } from 'src/commons/exceptions/unauthorized.exception';
 import { ValidationException } from 'src/commons/exceptions/validation.exception';
 import type { IReplyRepository } from '../repositories/reply-repository.interface';
+import { ReplyEntity } from '../entities/reply.entity';
 
 @Injectable()
 export class DeleteReplyUseCase {
@@ -13,14 +14,17 @@ export class DeleteReplyUseCase {
 
   async execute(replyId: string, userId: string): Promise<void> {
     // 댓글 조회
-    const reply = await this.replyRepository.findById(replyId);
+    const reply: ReplyEntity | null =
+      await this.replyRepository.findById(replyId);
     if (!reply) {
       throw new EntityNotFoundException('Reply', replyId);
     }
 
     // 권한 확인
     if (reply.getUserId() !== userId) {
-      throw new UnauthorizedException('You are not authorized to delete this reply');
+      throw new UnauthorizedException(
+        'You are not authorized to delete this reply',
+      );
     }
 
     // 이미 삭제된 댓글 확인

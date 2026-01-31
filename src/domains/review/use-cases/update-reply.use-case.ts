@@ -27,7 +27,9 @@ export class UpdateReplyUseCase {
 
     // 권한 확인
     if (reply.getUserId() !== userId) {
-      throw new UnauthorizedException('You are not authorized to update this reply');
+      throw new UnauthorizedException(
+        'You are not authorized to update this reply',
+      );
     }
 
     // 삭제된 댓글 확인

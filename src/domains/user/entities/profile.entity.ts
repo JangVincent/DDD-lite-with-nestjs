@@ -66,11 +66,15 @@ export class ProfileEntity {
     }
 
     if (nickname.length < 2 || nickname.length > 20) {
-      throw new ValidationException('Nickname must be between 2 and 20 characters');
+      throw new ValidationException(
+        'Nickname must be between 2 and 20 characters',
+      );
     }
 
     if (!/^[a-zA-Z0-9]+$/.test(nickname)) {
-      throw new ValidationException('Nickname can only contain letters and numbers');
+      throw new ValidationException(
+        'Nickname can only contain letters and numbers',
+      );
     }
   }
 

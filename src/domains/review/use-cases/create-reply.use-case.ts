@@ -34,7 +34,9 @@ export class CreateReplyUseCase {
 
     // 부모 댓글이 있는 경우 확인 (2-level 댓글 시스템)
     if (dto.parentReplyId) {
-      const parentReply = await this.replyRepository.findById(dto.parentReplyId);
+      const parentReply = await this.replyRepository.findById(
+        dto.parentReplyId,
+      );
       if (!parentReply) {
         throw new EntityNotFoundException('Parent reply', dto.parentReplyId);
       }

@@ -15,7 +15,9 @@ export class GetReviewsByAlbumUseCase {
 
     // 삭제되지 않고 PUBLIC인 리뷰만 반환
     return reviews
-      .filter((review) => !review.isDeleted() && review.getVisibility().isPublic())
+      .filter(
+        (review) => !review.isDeleted() && review.getVisibility().isPublic(),
+      )
       .map((review) => this.toResponseDto(review));
   }
 

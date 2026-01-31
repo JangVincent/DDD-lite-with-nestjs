@@ -12,7 +12,8 @@ export class GetRepliesByParentUseCase {
 
   async execute(parentReplyId: string): Promise<ReplyResponseDto[]> {
     // 특정 댓글의 대댓글들 조회
-    const replies = await this.replyRepository.findByParentReplyId(parentReplyId);
+    const replies =
+      await this.replyRepository.findByParentReplyId(parentReplyId);
 
     // 삭제되지 않은 댓글만 반환
     return replies

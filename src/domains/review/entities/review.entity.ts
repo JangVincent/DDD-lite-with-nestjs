@@ -87,7 +87,9 @@ export class ReviewEntity {
   // Utility
   validateTitle(title: string): void {
     if (title.trim().length >= 50) {
-      throw new ValidationException('Review title should be less than 50 characters');
+      throw new ValidationException(
+        'Review title should be less than 50 characters',
+      );
     }
   }
 
@@ -101,7 +103,9 @@ export class ReviewEntity {
 
   validateBodyText(bodyText: string): void {
     if (bodyText.trim().length >= 1000) {
-      throw new ValidationException('Review text should be less than 1000 characters');
+      throw new ValidationException(
+        'Review text should be less than 1000 characters',
+      );
     }
   }
 
